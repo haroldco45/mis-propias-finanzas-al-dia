@@ -196,6 +196,12 @@ nav.tabs button.on{background:var(--verde);color:#fff}
     <div class="sec-h"><h2 data-i18n="hoy">Hoy</h2><small id="hoyStamp"></small></div>
     <p class="lead" data-i18n="hoyL">Lo más reciente del canal y de los medios, del más nuevo al más viejo. Se renueva cada vez que entras.</p>
     <div id="hoyList"></div>
+    <button class="event" data-goto="tarjetas" style="display:block;width:100%;text-align:left;background:linear-gradient(120deg,#1b1f1d,#3a2a10)">
+      <span class="live" style="background:var(--lima);color:var(--verde)"><span data-i18n="gTag">Guía</span></span>
+      <h3 data-i18n="t8T">Guía del buen uso de las tarjetas débito y crédito</h3>
+      <p data-i18n="gP">Cuándo usar cada una, cómo no pagar intereses, seguridad y calculadora de cuotas.</p>
+      <span class="btn" style="margin-top:12px" data-i18n="gB">Abrir la guía</span>
+    </button>
     <div class="event" id="event">
       <span class="live" style="background:var(--oro);color:var(--verde)"><span data-i18n="evTag">Clase gratis en vivo</span></span>
       <h3 data-i18n="evT">Reto 2027: el mejor año financiero de tu vida</h3>
@@ -218,6 +224,7 @@ nav.tabs button.on{background:var(--verde);color:#fff}
     <p class="lead" data-i18n="toolsL">Los consejos de Mis Propias Finanzas convertidos en herramientas para usar con tu propia plata.</p>
     <div class="tools-nav" id="toolsNav">
       <button data-t="consejos" class="on" data-i18n="t1">Consejos clave</button>
+      <button data-t="tarjetas" data-i18n="t8">Buen uso de tarjetas</button>
       <button data-t="perfil" data-i18n="t2">Mi perfil de riesgo</button>
       <button data-t="interes" data-i18n="t3">Interés compuesto</button>
       <button data-t="pagate" data-i18n="t4">Págate primero</button>
@@ -230,6 +237,24 @@ nav.tabs button.on{background:var(--verde);color:#fff}
       <h3 data-i18n="t1">Consejos clave</h3>
       <p class="lead" data-i18n="t1L">Lo que Carolina y Juan Pablo repiten en entrevistas y en su podcast, en el orden en que conviene aplicarlo.</p>
       <div class="tips" id="tipsCurated"></div>
+    </div>
+
+    <div class="tool" id="t-tarjetas">
+      <h3 data-i18n="t8T">Guía del buen uso de las tarjetas débito y crédito</h3>
+      <p class="lead" data-i18n="t8L">La tarjeta no es el problema: el problema es el mal uso. Toca cada parte para abrirla y al final calcula cuánto te cuesta pagar a cuotas.</p>
+      <div class="chips" id="cardTabs"></div>
+      <div id="cardGuide"></div>
+      <div style="margin-top:22px">
+        <h3 data-i18n="t8C">¿A una cuota o a varias?</h3>
+        <p class="lead" data-i18n="t8CL">Pon la compra, las cuotas y la tasa de tu banco (sale en tu extracto). Por defecto va el tope legal.</p>
+        <div class="form">
+          <label><span data-i18n="f10">Valor de la compra (COP)</span><input id="tcV" type="number" value="1200000" step="50000"></label>
+          <label><span data-i18n="f11">Número de cuotas</span><input id="tcN" type="number" value="12" min="1" max="72"></label>
+          <label><span data-i18n="f12">Tasa efectiva anual (%)</span><input id="tcR" type="number" value="28.34" step="0.01"></label>
+        </div>
+        <p class="meta" data-i18n="usNote">Tope legal (tasa de usura) para crédito de consumo y tarjetas en noviembre de 2026: 28,34 % E.A., certificado por la Superfinanciera (Resolución 1707 de 2026). Cambia cada mes.</p>
+        <div class="res" id="tcRes"></div>
+      </div>
     </div>
 
     <div class="tool" id="t-perfil">

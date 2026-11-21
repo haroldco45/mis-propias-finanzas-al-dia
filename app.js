@@ -26,6 +26,11 @@ const T = {
     evTag:'Free live class', evT:'2027 Challenge: the best financial year of your life', evD:'December 9 · 7:00 p.m. Colombia time', evB:'Sign up',
     vids:'Videos', vidsL:'Tap the photo to watch it right here. Each video’s tips flow into Tools automatically.',
     tools:'Investing tools', toolsShort:'Tools', toolsL:'Mis Propias Finanzas’ advice turned into tools you can use with your own money.',
+    t8:'Smart card use', t8T:'Guide to using debit and credit cards well', t8L:'The card isn’t the problem: misuse is. Tap each part to open it, and at the end see what paying in installments costs you.',
+    t8C:'One installment or several?', t8CL:'Enter the purchase, the installments and your bank’s rate (it’s on your statement). The legal cap is the default.',
+    f10:'Purchase amount (COP)', f11:'Number of installments', f12:'Effective annual rate (%)',
+    usNote:'Legal cap (usury rate) for consumer credit and cards in November 2026: 28.34% EA, certified by the Superfinanciera (Resolution 1707 of 2026). It changes every month.',
+    gTag:'Guide', gP:'When to use each one, how to avoid interest, security and an installment calculator.', gB:'Open the guide',
     t1:'Key advice', t2:'My risk profile', t3:'Compound interest', t4:'Pay yourself first', t5:'Cash vs. inflation', t6:'Is it a scam?', t7:'Channel tips',
     t1L:'What Carolina and Juan Pablo keep repeating in interviews and on their podcast, in the order it makes sense to apply it.',
     t2L:'They insist your risk profile depends mostly on when you will need the money, not just your personality. Take it once per goal.',
@@ -343,6 +348,56 @@ function scamCheck(){
   $('#scamRes').innerHTML = `<div class="alert ${cls}">${LANG==='es'?es:en}</div>`;
 }
 
+
+/* ---------------- Guía del buen uso de las tarjetas ---------------- */
+const CARD_GUIDE = [
+ {id:'debito', es:'Tarjeta débito', en:'Debit card', items:[
+  ['Es tu propia plata','Cada compra sale de tu cuenta al instante. Úsala para el gasto del día a día que ya está en tu presupuesto.','It’s your own money','Every purchase comes straight out of your account. Use it for day-to-day spending that is already in your budget.'],
+  ['Conoce las cuotas de manejo y retiros','Revisa cuánto te cobran por manejo, por retirar en cajeros de otros bancos y por transferencias. Busca cuentas sin cuota de manejo.','Know the fees','Check what you pay in monthly fees, out-of-network ATM withdrawals and transfers. Look for no-fee accounts.'],
+  ['Separa la cuenta de gastos de la de ahorro','Si el ahorro está en la misma cuenta de la tarjeta, se gasta sin darte cuenta. Págate primero y mueve esa parte a otra cuenta.','Keep spending and savings apart','If savings sit in the card’s account, they get spent without noticing. Pay yourself first and move that share elsewhere.'],
+  ['Retira en cajeros seguros','Prefiere cajeros dentro de centros comerciales o bancos, de día, tapa el teclado y no aceptes ayuda de desconocidos.','Use safe ATMs','Prefer ATMs inside malls or banks, during the day; cover the keypad and refuse help from strangers.']
+ ]},
+ {id:'credito', es:'Tarjeta de crédito', en:'Credit card', items:[
+  ['Es un préstamo, no un sueldo extra','El cupo es plata prestada del banco. Gasta con ella solo lo que ya tienes para pagar ese mes.','It’s a loan, not extra salary','Your limit is the bank’s money. Only spend what you already have to pay off that month.'],
+  ['Compra a una sola cuota','A una cuota normalmente no pagas intereses. Diferir a 12, 24 o 36 cuotas hace que algo pequeño salga mucho más caro (mira la calculadora abajo).','Buy in a single installment','In one installment you usually pay no interest. Spreading it over 12, 24 or 36 makes small things far more expensive (see the calculator below).'],
+  ['Paga el total, a tiempo','Paga el valor total del extracto antes de la fecha límite. Pagar solo el mínimo alarga la deuda y casi todo se va en intereses. Programa un recordatorio o el débito automático.','Pay in full, on time','Pay the full statement balance before the due date. Paying only the minimum drags the debt out and most of it goes to interest. Set a reminder or automatic payment.'],
+  ['Usa poco del cupo','Que el cupo sea alto no es para usarlo todo. Mantén lo usado bajo y no pidas aumentos de cupo que no necesitas.','Use little of your limit','A high limit is not there to max out. Keep usage low and don’t ask for limit increases you don’t need.'],
+  ['No saques plata en efectivo con la crédito','Los avances cobran intereses desde el primer día y suelen tener comisión. Es de las formas más caras de conseguir plata.','No cash advances','Cash advances charge interest from day one and usually a fee. One of the most expensive ways to get money.'],
+  ['Una tarjeta no paga a otra','Pagar una tarjeta con otra o con un avance solo pasa la deuda de un lado a otro y la hace crecer. Si ya estás enredado, habla con el banco para reestructurar.','One card doesn’t pay another','Paying one card with another or with an advance just moves the debt and grows it. If you’re stuck, talk to the bank about restructuring.'],
+  ['Revisa el extracto cada mes','Mira compra por compra, cobros que no reconoces, seguros que no pediste y la tasa que te están cobrando.','Read your statement monthly','Check every purchase, charges you don’t recognize, insurance you didn’t ask for and the rate you’re being charged.'],
+  ['Aprovecha lo bueno','Bien usada te da historial crediticio, protección si te la roban, compras por internet, reservas de hotel y puntos o millas. Solo vale la pena si la pagas completa.','Use the perks','Used well it builds credit history, protects you if stolen, and helps with online purchases, hotel bookings and points or miles. Only worth it if you pay in full.']
+ ]},
+ {id:'seguridad', es:'Seguridad', en:'Security', items:[
+  ['Activa las alertas','Activa en la app del banco las notificaciones de cada compra y retiro. Así detectas un fraude el mismo día.','Turn on alerts','Turn on notifications for every purchase and withdrawal in your bank app, so you catch fraud the same day.'],
+  ['Nunca des la clave ni los códigos','El banco jamás te pide por llamada, WhatsApp o correo tu clave, el código que te llega al celular ni los números de atrás de la tarjeta.','Never share your PIN or codes','Your bank will never ask by call, WhatsApp or email for your PIN, the code sent to your phone or the numbers on the back.'],
+  ['No pierdas de vista la tarjeta','Al pagar, que pasen la tarjeta delante de ti. Prefiere pagar sin contacto o con el celular.','Keep your card in sight','When paying, have it processed in front of you. Prefer contactless or phone payments.'],
+  ['Compra en internet con cuidado','Solo en páginas que conoces, que empiecen con https, y nunca desde un enlace que te llegó por mensaje. Si puedes, usa una tarjeta virtual.','Shop online carefully','Only on sites you know that start with https, never from a link sent by message. Use a virtual card if you can.'],
+  ['Si te la roban, bloquéala ya','Bloquéala desde la app o llama al banco de inmediato y reporta las compras que no hiciste.','If stolen, block it now','Block it from the app or call the bank immediately and report purchases you didn’t make.']
+ ]},
+ {id:'regla', es:'Regla de oro', en:'Golden rule', items:[
+  ['Débito para el día a día, crédito solo si la pagas completa','Si no estás seguro de poder pagar el total el próximo mes, usa la débito. La crédito es una herramienta, no una extensión del sueldo.','Debit day to day, credit only if you pay in full','If you’re not sure you can pay the full balance next month, use debit. Credit is a tool, not an extension of your salary.'],
+  ['Antes de deslizar, pregúntate','¿Esto está en mi presupuesto? ¿Lo puedo pagar completo este mes? ¿Lo compraría igual si tuviera que pagar en efectivo?','Before you swipe, ask','Is this in my budget? Can I pay it in full this month? Would I still buy it if I had to pay cash?']
+ ]}
+];
+let CARD_TAB='credito';
+function renderCards(){
+  $('#cardTabs').innerHTML = CARD_GUIDE.map(g=>`<button data-card="${g.id}" class="${CARD_TAB===g.id?'on':''}">${esc(g[LANG])}</button>`).join('');
+  const g = CARD_GUIDE.find(x=>x.id===CARD_TAB);
+  $('#cardGuide').innerHTML = `<div class="tips">${g.items.map((it,i)=>`<div class="tip" style="border-top-color:${g.id==='seguridad'?'var(--rojo)':g.id==='regla'?'var(--oro)':'var(--menta)'}">
+     <div class="n">${String(i+1).padStart(2,'0')}</div><h4>${esc(LANG==='es'?it[0]:it[2])}</h4><p>${esc(LANG==='es'?it[1]:it[3])}</p></div>`).join('')}</div>`;
+}
+function calcTarjeta(){
+  const V=+$('#tcV').value||0, N=Math.max(1,Math.min(72,+$('#tcN').value||1)), EA=(+$('#tcR').value||0)/100;
+  const i=Math.pow(1+EA,1/12)-1;
+  const cuota = N===1||i===0 ? V/N : V*i/(1-Math.pow(1+i,-N));
+  const total=cuota*N, inter=total-V;
+  $('#tcRes').innerHTML = `<div>${LANG==='es'?`A ${N} ${N===1?'cuota':'cuotas'} pagarías cada mes`:`In ${N} installment${N===1?'':'s'} you’d pay monthly`}</div><div class="big">${cop(cuota)}</div>
+   <div style="font-size:14px;margin-top:6px">${LANG==='es'?'Total pagado':'Total paid'}: <b>${cop(total)}</b> · ${LANG==='es'?'Intereses':'Interest'}: <b style="color:${inter>0?'#ffb4ab':'var(--lima)'}">${cop(inter)}</b></div>
+   <div style="font-size:13px;opacity:.85;margin-top:8px">${N===1?(LANG==='es'?'A una cuota normalmente no pagas intereses si cancelas antes de la fecha límite.':'In one installment you usually pay no interest if you pay before the due date.')
+     :(LANG==='es'?`Los intereses equivalen al ${Math.round(inter/V*100)} % de lo que compraste. A una sola cuota te ahorrarías ${cop(inter)}.`:`Interest equals ${Math.round(inter/V*100)}% of what you bought. Paying in one installment would save ${cop(inter)}.`)}</div>
+   <div class="meta" style="color:#cfe;margin-top:6px">${LANG==='es'?'Cálculo aproximado con cuota fija; tu banco puede sumar seguros o cuota de manejo.':'Approximate fixed-payment estimate; your bank may add insurance or fees.'}</div>`;
+}
+
 /* ---------------- Cuenta regresiva del evento ---------------- */
 function countdown(){
   const ms = EVENT_AT - Date.now(); const box=$('#count');
@@ -366,24 +421,28 @@ document.addEventListener('click',e=>{
   const tab=e.target.closest('#tabs button');
   if(tab){ document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b===tab));
     document.querySelectorAll('.view').forEach(v=>v.classList.toggle('on',v.id==='v-'+tab.dataset.v)); scrollTo({top:document.querySelector('.ticker').offsetTop,behavior:'smooth'}); return; }
+  const go=e.target.closest('[data-goto]');
+  if(go){ document.querySelector('#tabs button[data-v=tools]').click(); document.querySelector(`#toolsNav button[data-t=${go.dataset.goto}]`).click(); return; }
   const tn=e.target.closest('#toolsNav button');
   if(tn){ document.querySelectorAll('#toolsNav button').forEach(b=>b.classList.toggle('on',b===tn));
     document.querySelectorAll('.tool').forEach(t=>t.classList.toggle('on',t.id==='t-'+tn.dataset.t)); return; }
+  const cb=e.target.closest('#cardTabs button'); if(cb){ CARD_TAB=cb.dataset.card; renderCards(); return; }
   const ch=e.target.closest('#chips button'); if(ch){ CAT=ch.dataset.c; renderAuto(); return; }
   const pl=e.target.closest('[data-play]');
   if(pl){ pl.outerHTML=`<iframe class="iframe" src="https://www.youtube-nocookie.com/embed/${pl.dataset.play}?autoplay=1&rel=0" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>`; }
 });
 $('#btnRefresh').onclick=()=>liveSearch(true);
-$('#btnLang').onclick=()=>{ LANG=LANG==='es'?'en':'es'; localStorage.setItem('mpf-lang',LANG); renderAll(); renderQuiz(); renderScam(); calcInteres(); calcPagate(); calcColchon(); countdown(); };
+$('#btnLang').onclick=()=>{ LANG=LANG==='es'?'en':'es'; localStorage.setItem('mpf-lang',LANG); renderAll(); renderQuiz(); renderScam(); renderCards(); calcTarjeta(); calcInteres(); calcPagate(); calcColchon(); countdown(); };
 $('#q').addEventListener('input',search);
 ['ci0','ciM','ciR','ciY'].forEach(id=>$('#'+id).addEventListener('input',calcInteres));
 ['pgI','pgP','pgG'].forEach(id=>$('#'+id).addEventListener('input',calcPagate));
+['tcV','tcN','tcR'].forEach(id=>$('#'+id).addEventListener('input',calcTarjeta));
 ['clM','clI','clY'].forEach(id=>$('#'+id).addEventListener('input',calcColchon));
 $('#quizBtn').onclick=quizResult;
 $('#scam').addEventListener('change',scamCheck);
 document.addEventListener('visibilitychange',()=>{ if(!document.hidden) loadData().then(()=>liveSearch(false)); });
 
 /* ---------------- Arranque: datos del robot + búsqueda en vivo al abrir ---------------- */
-applyLang(); renderQuiz(); renderScam(); calcInteres(); calcPagate(); calcColchon(); countdown(); setInterval(countdown,1000);
+applyLang(); renderQuiz(); renderScam(); renderCards(); calcTarjeta(); calcInteres(); calcPagate(); calcColchon(); countdown(); setInterval(countdown,1000);
 loadData().then(()=>liveSearch(false));
 if('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js');
