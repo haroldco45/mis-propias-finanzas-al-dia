@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Mis Propias Finanzas al Día · Vibras Positivas HM</title>
+<meta name="description" content="Seguimiento al canal Mis Propias Finanzas (Carolina Pineda y Juan Pablo Zuluaga): videos, noticias y herramientas de inversión en un solo lugar.">
+<meta name="theme-color" content="#0b3d2e">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<!-- Vista previa al compartir (foto real: miniatura del último video, la actualiza el robot) -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Vibras Positivas HM">
+<meta property="og:title" content="Mis Propias Finanzas al Día">
+<meta property="og:description" content="Videos, consejos y herramientas de inversión de Mis Propias Finanzas, actualizados cada 30 minutos.">
+<meta property="og:url" content="https://mis-propias-finanzas-al-dia.netlify.app/">
+<meta property="og:image" content="https://mis-propias-finanzas-al-dia.netlify.app/og.jpg">
+<meta property="og:image:width" content="1280">
+<meta property="og:image:height" content="720">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://mis-propias-finanzas-al-dia.netlify.app/og.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --verde:#0b3d2e; --verde2:#11624a; --menta:#2fd49a; --lima:#c8f560;
+  --crema:#f6f3ea; --tinta:#0e1512; --gris:#5d6b64; --linea:#dfe5df;
+  --rojo:#e24c3f; --oro:#f2b632; --radio:18px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:Inter,system-ui,sans-serif;background:var(--crema);color:var(--tinta);padding-bottom:84px;-webkit-font-smoothing:antialiased}
+h1,h2,h3,.brand{font-family:Archivo,Inter,sans-serif;letter-spacing:-.02em}
+a{color:inherit}
+button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
+input,select{font:inherit}
+
+/* ---------- Encabezado ---------- */
+.top{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:10px;padding:12px 16px;background:rgba(11,61,46,.92);backdrop-filter:blur(10px);color:#fff}
+.brand{font-weight:900;font-size:17px;line-height:1}
+.brand small{display:block;font:500 11px Inter;opacity:.75;margin-top:3px}
+.top .sp{flex:1}
+.pill{border:1.5px solid rgba(255,255,255,.35);border-radius:999px;padding:7px 12px;font-size:13px;font-weight:600}
+.pill.on{background:var(--lima);color:var(--verde);border-color:var(--lima)}
+#btnRefresh.spin{animation:pulse 1s infinite}
+@keyframes pulse{50%{opacity:.4}}
+
+/* ---------- Héroe con foto real ---------- */
+.hero{position:relative;height:340px;overflow:hidden;color:#fff;background:var(--verde)}
+.hero .bg{position:absolute;inset:-20px;background-size:cover;background-position:center;animation:kb 22s ease-in-out infinite alternate;filter:saturate(1.1)}
+@keyframes kb{from{transform:scale(1.05) translate(0,0)}to{transform:scale(1.18) translate(-14px,8px)}}
+.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,61,46,.15) 0%,rgba(11,61,46,.55) 50%,rgba(8,30,23,.96) 100%)}
+.hero .in{position:absolute;left:0;right:0;bottom:0;padding:20px;z-index:2}
+.live{display:inline-flex;align-items:center;gap:7px;background:var(--rojo);font:700 11px Inter;letter-spacing:.08em;padding:5px 10px;border-radius:999px;text-transform:uppercase}
+.live i{width:7px;height:7px;border-radius:50%;background:#fff;animation:pulse 1.2s infinite}
+.hero h1{font-size:30px;line-height:1.05;margin:10px 0 6px;font-weight:900}
+.hero p{opacity:.9;font-size:14px;max-width:560px}
+.stats{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
+.stat{background:rgba(255,255,255,.12);backdrop-filter:blur(6px);border-radius:12px;padding:8px 12px}
+.stat b{display:block;font:900 18px Archivo}
+.stat span{font-size:11px;opacity:.8}
+
+/* ---------- Cinta de titulares ---------- */
+.ticker{background:var(--lima);color:var(--verde);overflow:hidden;white-space:nowrap;font-weight:600;font-size:13px;padding:9px 0}
+.ticker .run{display:inline-block;padding-left:100%;animation:tick 45s linear infinite}
+.ticker span{margin-right:42px}
+@keyframes tick{to{transform:translateX(-100%)}}
+
+/* ---------- Secciones ---------- */
+main{max-width:980px;margin:0 auto;padding:0 16px}
+.view{display:none;animation:up .35s ease}
+.view.on{display:block}
+@keyframes up{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.sec-h{display:flex;align-items:baseline;justify-content:space-between;margin:26px 0 12px;gap:10px}
+.sec-h h2{font-size:24px;font-weight:900}
+.sec-h small{color:var(--gris);font-size:12px}
+.lead{color:var(--gris);font-size:14px;margin:-4px 0 14px}
+
+/* tarjetas de video */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:14px}
+.card{background:#fff;border-radius:var(--radio);overflow:hidden;box-shadow:0 2px 0 var(--linea);transition:transform .2s,box-shadow .2s}
+.card:hover{transform:translateY(-3px);box-shadow:0 10px 24px rgba(11,61,46,.12)}
+.thumb{position:relative;aspect-ratio:16/9;background:#123 center/cover no-repeat;cursor:pointer}
+.thumb .dur{position:absolute;left:10px;bottom:10px;background:rgba(0,0,0,.75);color:#fff;font:600 11px Inter;padding:4px 8px;border-radius:6px}
+.thumb .new{position:absolute;right:10px;top:10px;background:var(--rojo);color:#fff;font:700 10px Inter;padding:4px 8px;border-radius:6px;letter-spacing:.06em}
+.thumb .play{position:absolute;inset:0;display:grid;place-items:center;opacity:0;transition:.2s;background:rgba(0,0,0,.25);color:#fff;font:700 14px Inter}
+.thumb:hover .play{opacity:1}
+.card .b{padding:14px}
+.card h3{font-size:15.5px;line-height:1.25;font-weight:700}
+.meta{color:var(--gris);font-size:12px;margin-top:6px}
+.tag{display:inline-block;font:600 11px Inter;background:#e7f6ef;color:var(--verde2);padding:3px 8px;border-radius:999px;margin:8px 6px 0 0}
+.iframe{aspect-ratio:16/9;width:100%;border:0;display:block}
+
+/* noticias */
+.news{display:flex;gap:12px;background:#fff;border-radius:14px;padding:14px;margin-bottom:10px;text-decoration:none;border-left:4px solid var(--menta)}
+.news h3{font-size:15px;line-height:1.3}
+.news .src{font:700 11px Inter;color:var(--verde2);text-transform:uppercase;letter-spacing:.05em}
+
+/* evento */
+.event{position:relative;border-radius:var(--radio);overflow:hidden;background:linear-gradient(120deg,var(--verde),var(--verde2));color:#fff;padding:20px;margin-top:18px}
+.event h3{font-size:20px;font-weight:900;margin:6px 0}
+.count{display:flex;gap:8px;margin:12px 0}
+.count div{background:rgba(255,255,255,.14);border-radius:10px;padding:8px 10px;text-align:center;min-width:58px}
+.count b{display:block;font:900 22px Archivo}
+.count span{font-size:10px;opacity:.8;text-transform:uppercase}
+.btn{display:inline-block;background:var(--lima);color:var(--verde);font-weight:700;padding:11px 16px;border-radius:12px;text-decoration:none;font-size:14px}
+.btn.alt{background:var(--verde);color:#fff}
+.btn.ghost{background:#fff;color:var(--verde);border:1.5px solid var(--verde)}
+
+/* búsqueda */
+.search{display:flex;gap:8px;margin:16px 0 4px}
+.search input{flex:1;border:1.5px solid var(--linea);border-radius:12px;padding:12px 14px;background:#fff}
+.search input:focus{outline:2px solid var(--menta);border-color:transparent}
+
+/* herramientas */
+.tools-nav{display:flex;gap:8px;overflow-x:auto;padding:4px 0 12px;scrollbar-width:none}
+.tools-nav button{white-space:nowrap;background:#fff;border:1.5px solid var(--linea);border-radius:999px;padding:9px 14px;font-weight:600;font-size:13px}
+.tools-nav button.on{background:var(--verde);color:#fff;border-color:var(--verde)}
+.tool{display:none;background:#fff;border-radius:var(--radio);padding:18px;animation:up .3s ease}
+.tool.on{display:block}
+.tool h3{font-size:20px;font-weight:900;margin-bottom:4px}
+.tool .lead{margin:0 0 14px}
+.form{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
+.form label{font-size:12px;font-weight:600;color:var(--gris);display:block}
+.form input,.form select{width:100%;margin-top:5px;border:1.5px solid var(--linea);border-radius:10px;padding:11px;background:var(--crema)}
+.res{margin-top:16px;background:var(--verde);color:#fff;border-radius:14px;padding:16px}
+.res .big{font:900 30px Archivo;color:var(--lima)}
+.bars{display:flex;align-items:flex-end;gap:3px;height:120px;margin-top:14px}
+.bars div{flex:1;border-radius:4px 4px 0 0;background:var(--menta);transition:height .5s}
+.bars div.c{background:rgba(255,255,255,.35)}
+.legend{display:flex;gap:14px;font-size:12px;margin-top:8px;opacity:.9}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+.q{border:1.5px solid var(--linea);border-radius:14px;padding:14px;margin-bottom:10px}
+.q p{font-weight:600;margin-bottom:8px}
+.q label{display:block;padding:8px 10px;border-radius:10px;cursor:pointer;font-size:14px}
+.q label:hover{background:var(--crema)}
+.q input{margin-right:8px;accent-color:var(--verde)}
+.tips{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+.tip{border-radius:14px;padding:16px;background:var(--crema);border-top:4px solid var(--menta)}
+.tip .n{font:900 13px Archivo;color:var(--verde2);letter-spacing:.06em;text-transform:uppercase}
+.tip h4{font:800 16px Archivo;margin:6px 0}
+.tip p{font-size:14px;color:#33403a}
+.tip a{font-size:12px;color:var(--verde2);font-weight:600;display:inline-block;margin-top:8px}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.chips button{font-size:12px;font-weight:600;border-radius:999px;padding:6px 11px;background:var(--crema)}
+.chips button.on{background:var(--lima);color:var(--verde)}
+.check label{display:flex;gap:10px;padding:10px;border-radius:10px;border:1.5px solid var(--linea);margin-bottom:8px;font-size:14px;cursor:pointer}
+.check input{accent-color:var(--rojo);margin-top:3px}
+.alert{border-radius:12px;padding:14px;margin-top:12px;font-weight:600}
+.ok{background:#e7f6ef;color:var(--verde2)} .warn{background:#fff3d6;color:#7a5400} .bad{background:#fde5e2;color:#9b2318}
+
+.note{font-size:12px;color:var(--gris);background:#fff;border-radius:12px;padding:12px;margin:20px 0;border:1px dashed var(--linea)}
+.empty{color:var(--gris);padding:20px;text-align:center;background:#fff;border-radius:14px}
+footer{text-align:center;color:var(--gris);font-size:12px;padding:30px 16px}
+footer b{color:var(--verde)}
+
+/* navegación inferior (solo texto, sin íconos) */
+nav.tabs{position:fixed;left:0;right:0;bottom:0;z-index:40;display:flex;background:#fff;border-top:1px solid var(--linea);padding:8px 6px calc(8px + env(safe-area-inset-bottom))}
+nav.tabs button{flex:1;padding:10px 2px;border-radius:12px;font:700 12.5px Inter;color:var(--gris)}
+nav.tabs button.on{background:var(--verde);color:#fff}
+.toast{position:fixed;left:50%;bottom:96px;transform:translateX(-50%) translateY(20px);background:var(--tinta);color:#fff;padding:10px 16px;border-radius:999px;font-size:13px;opacity:0;transition:.3s;z-index:50;pointer-events:none}
+.toast.on{opacity:1;transform:translateX(-50%)}
+@media(min-width:720px){.hero{height:420px}.hero h1{font-size:44px}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="brand">Mis Propias Finanzas <span style="color:var(--lima)">al Día</span><small data-i18n="sub">Seguimiento · Vibras Positivas HM</small></div>
+  <div class="sp"></div>
+  <button class="pill" id="btnRefresh" data-i18n="refresh">Actualizar</button>
+  <button class="pill" id="btnLang">EN</button>
+</header>
+
+<section class="hero">
+  <div class="bg" id="heroBg"></div>
+  <div class="in">
+    <span class="live"><i></i><span data-i18n="live">En vivo</span></span>
+    <h1 id="heroTitle">Carolina Pineda y Juan Pablo Zuluaga</h1>
+    <p data-i18n="heroP">Todo lo que publica Mis Propias Finanzas, sus consejos convertidos en herramientas de inversión y las noticias del canal, al día.</p>
+    <div class="stats">
+      <div class="stat"><b id="stVideos">–</b><span data-i18n="stV">videos seguidos</span></div>
+      <div class="stat"><b id="stTips">–</b><span data-i18n="stT">consejos extraídos</span></div>
+      <div class="stat"><b id="stUpd">–</b><span data-i18n="stU">última revisión (Col)</span></div>
+    </div>
+  </div>
+</section>
+<div class="ticker"><div class="run" id="ticker"></div></div>
+
+<main>
+  <!-- ================= HOY ================= -->
+  <section class="view on" id="v-hoy">
+    <div class="search"><input id="q" type="search" placeholder="Buscar en videos, consejos y noticias…" data-i18n-ph="ph"></div>
+    <div id="searchRes"></div>
+    <div class="sec-h"><h2 data-i18n="hoy">Hoy</h2><small id="hoyStamp"></small></div>
+    <p class="lead" data-i18n="hoyL">Lo más reciente del canal y de los medios, del más nuevo al más viejo. Se renueva cada vez que entras.</p>
+    <div id="hoyList"></div>
+    <div class="event" id="event">
+      <span class="live" style="background:var(--oro);color:var(--verde)"><span data-i18n="evTag">Clase gratis en vivo</span></span>
+      <h3 data-i18n="evT">Reto 2027: el mejor año financiero de tu vida</h3>
+      <p data-i18n="evD">9 de diciembre · 7:00 p. m. hora Colombia</p>
+      <div class="count" id="count"></div>
+      <a class="btn" href="https://mispropiasfinanzas.com/" target="_blank" rel="noopener" data-i18n="evB">Ir a registrarme</a>
+    </div>
+  </section>
+
+  <!-- ================= VIDEOS ================= -->
+  <section class="view" id="v-videos">
+    <div class="sec-h"><h2 data-i18n="vids">Videos</h2><small id="vidCount"></small></div>
+    <p class="lead" data-i18n="vidsL">Toca la foto para verlo aquí mismo. Los consejos de cada video pasan solos a Herramientas.</p>
+    <div class="grid" id="vidGrid"></div>
+  </section>
+
+  <!-- ================= HERRAMIENTAS ================= -->
+  <section class="view" id="v-tools">
+    <div class="sec-h"><h2 data-i18n="tools">Herramientas de inversión</h2></div>
+    <p class="lead" data-i18n="toolsL">Los consejos de Mis Propias Finanzas convertidos en herramientas para usar con tu propia plata.</p>
+    <div class="tools-nav" id="toolsNav">
+      <button data-t="consejos" class="on" data-i18n="t1">Consejos clave</button>
+      <button data-t="perfil" data-i18n="t2">Mi perfil de riesgo</button>
+      <button data-t="interes" data-i18n="t3">Interés compuesto</button>
+      <button data-t="pagate" data-i18n="t4">Págate primero</button>
+      <button data-t="colchon" data-i18n="t5">El colchón vs. la inflación</button>
+      <button data-t="estafa" data-i18n="t6">¿Es estafa?</button>
+      <button data-t="canal" data-i18n="t7">Consejos del canal</button>
+    </div>
+
+    <div class="tool on" id="t-consejos">
+      <h3 data-i18n="t1">Consejos clave</h3>
+      <p class="lead" data-i18n="t1L">Lo que Carolina y Juan Pablo repiten en entrevistas y en su podcast, en el orden en que conviene aplicarlo.</p>
+      <div class="tips" id="tipsCurated"></div>
+    </div>
+
+    <div class="tool" id="t-perfil">
+      <h3 data-i18n="t2">Mi perfil de riesgo</h3>
+      <p class="lead" data-i18n="t2L">Ellos insisten en que el perfil de riesgo depende sobre todo de cuándo vas a necesitar la plata, no solo de tu personalidad. Hazlo una vez por cada meta.</p>
+      <div id="quiz"></div>
+      <button class="btn alt" id="quizBtn" data-i18n="calc">Ver resultado</button>
+      <div id="quizRes"></div>
+    </div>
+
+    <div class="tool" id="t-interes">
+      <h3 data-i18n="t3">Interés compuesto</h3>
+      <p class="lead" data-i18n="t3L">Cuánto podría crecer lo que inviertes cada mes. La tasa es un supuesto tuyo: ninguna inversión seria garantiza rentabilidad.</p>
+      <div class="form">
+        <label><span data-i18n="f1">Monto inicial (COP)</span><input id="ci0" type="number" value="1000000" min="0" step="50000"></label>
+        <label><span data-i18n="f2">Aporte mensual (COP)</span><input id="ciM" type="number" value="300000" min="0" step="50000"></label>
+        <label><span data-i18n="f3">Rentabilidad anual supuesta (%)</span><input id="ciR" type="number" value="10" step="0.5"></label>
+        <label><span data-i18n="f4">Años</span><input id="ciY" type="number" value="15" min="1" max="50"></label>
+      </div>
+      <div class="res" id="ciRes"></div>
+    </div>
+
+    <div class="tool" id="t-pagate">
+      <h3 data-i18n="t4">Págate primero</h3>
+      <p class="lead" data-i18n="t4L">Apenas te llega el pago, separa primero tu parte para ahorro e inversión y vive con el resto. Sirve igual si te pagan por quincena, mes o comisión.</p>
+      <div class="form">
+        <label><span data-i18n="f5">Ingreso del mes (COP)</span><input id="pgI" type="number" value="2500000" step="50000"></label>
+        <label><span data-i18n="f6">Porcentaje para ti (%)</span><input id="pgP" type="range" min="5" max="40" value="15"></label>
+        <label><span data-i18n="f7">Gastos fijos del mes (COP)</span><input id="pgG" type="number" value="1600000" step="50000"></label>
+      </div>
+      <div class="res" id="pgRes"></div>
+    </div>
+
+    <div class="tool" id="t-colchon">
+      <h3 data-i18n="t5">El colchón vs. la inflación</h3>
+      <p class="lead" data-i18n="t5L">Plata quieta pierde poder de compra. Mira cuánto "vale" de verdad tu dinero guardado con el paso de los años.</p>
+      <div class="form">
+        <label><span data-i18n="f8">Plata guardada (COP)</span><input id="clM" type="number" value="5000000" step="100000"></label>
+        <label><span data-i18n="f9">Inflación anual (%)</span><input id="clI" type="number" value="6.30" step="0.1"></label>
+        <label><span data-i18n="f4">Años</span><input id="clY" type="number" value="5" min="1" max="30"></label>
+      </div>
+      <p class="meta" data-i18n="infNote">Inflación anual de Colombia a octubre de 2026: 6,30 % (DANE, publicada el 9 de nov. de 2026). Cámbiala si sale un dato nuevo.</p>
+      <div class="res" id="clRes"></div>
+    </div>
+
+    <div class="tool" id="t-estafa">
+      <h3 data-i18n="t6">¿Es estafa?</h3>
+      <p class="lead" data-i18n="t6L">Antes de meter plata en una "oportunidad", marca lo que te prometen.</p>
+      <div class="check" id="scam"></div>
+      <div id="scamRes"></div>
+      <p style="margin-top:12px"><a class="btn ghost" href="https://www.superfinanciera.gov.co/" target="_blank" rel="noopener" data-i18n="sfc">Verificar en la Superfinanciera</a></p>
+    </div>
+
+    <div class="tool" id="t-canal">
+      <h3 data-i18n="t7">Consejos del canal</h3>
+      <p class="lead" data-i18n="t7L">El robot lee cada video nuevo y lo ordena por tema. Toca uno para ver el video de donde salió.</p>
+      <div class="chips" id="chips"></div>
+      <div class="tips" id="tipsAuto"></div>
+    </div>
+
+    <div class="note" data-i18n="disc">Contenido educativo. No es asesoría financiera personalizada. Antes de invertir, revisa que la entidad esté vigilada por la Superintendencia Financiera de Colombia.</div>
+  </section>
+
+  <!-- ================= NOTICIAS ================= -->
+  <section class="view" id="v-news">
+    <div class="sec-h"><h2 data-i18n="news">En los medios</h2><small id="newsCount"></small></div>
+    <p class="lead" data-i18n="newsL">Lo que dicen los medios sobre Mis Propias Finanzas y sus creadores.</p>
+    <div id="newsList"></div>
+  </section>
+
+  <!-- ================= ACERCA ================= -->
+  <section class="view" id="v-about">
+    <div class="sec-h"><h2 data-i18n="about">Sobre el canal</h2></div>
+    <div class="card"><div class="b">
+      <h3>Mis Propias Finanzas</h3>
+      <p class="meta" style="font-size:14px;color:#33403a" data-i18n="aboutP">Plataforma de educación financiera creada en 2019 por Carolina Pineda y Juan Pablo Zuluaga. Hablan de presupuesto, inversión, finca raíz, finanzas en pareja y educación financiera para niños. También hacen con Portafolio el podcast "Finanzas en Voz Alta".</p>
+      <p style="margin-top:14px;display:flex;gap:8px;flex-wrap:wrap">
+        <a class="btn alt" href="https://www.youtube.com/@MisPropiasFinanzas" target="_blank" rel="noopener">YouTube</a>
+        <a class="btn ghost" href="https://mispropiasfinanzas.com/" target="_blank" rel="noopener" data-i18n="web">Página web</a>
+      </p>
+    </div></div>
+    <div class="note" data-i18n="indep">App independiente hecha por Vibras Positivas HM para seguir el canal. No está afiliada a Mis Propias Finanzas. Los videos y fotos pertenecen a sus autores y se muestran desde YouTube.</div>
+    <div class="card"><div class="b">
+      <h3>Vibras Positivas HM</h3>
+      <p class="meta" style="font-size:14px" data-i18n="vph">¿Quieres una app así para tu negocio o tu marca? Escríbenos.</p>
+      <p style="margin-top:12px"><a class="btn" href="https://wa.me/573117700431?text=Hola%20Harold%2C%20vi%20la%20app%20Mis%20Propias%20Finanzas%20al%20D%C3%ADa" target="_blank" rel="noopener">WhatsApp 311 770 0431</a></p>
+    </div></div>
+  </section>
+</main>
+
+<footer>Hecho por <b>Vibras Positivas HM</b> · Caucasia, Antioquia · <span id="ftUpd"></span></footer>
+
+<nav class="tabs" id="tabs">
+  <button data-v="hoy" class="on" data-i18n="hoy">Hoy</button>
+  <button data-v="videos" data-i18n="vids">Videos</button>
+  <button data-v="tools" data-i18n="toolsShort">Herramientas</button>
+  <button data-v="news" data-i18n="newsShort">Medios</button>
+  <button data-v="about" data-i18n="aboutShort">Canal</button>
+</nav>
+<div class="toast" id="toast"></div>
+
+<script src="app.js"></script>
+</body>
+</html>

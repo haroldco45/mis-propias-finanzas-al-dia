@@ -1,0 +1,36 @@
+name: Robot de noticias (cada 30 min)
+
+on:
+  schedule:
+    - cron: '*/30 * * * *'
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['robot/**', '.github/workflows/robot.yml']
+
+permissions:
+  contents: write
+
+concurrency:
+  group: robot
+  cancel-in-progress: false
+
+jobs:
+  actualizar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Traer videos y noticias reales
+        run: node robot/robot.mjs
+      - name: Guardar cambios
+        run: |
+          git config user.name "Robot Vibras Positivas HM"
+          git config user.email "robot@vibraspositivashm.com"
+          git add data.json og.jpg
+          if git diff --cached --quiet; then echo "Sin cambios"; exit 0; fi
+          git commit -m "Robot: actualización $(TZ=America/Bogota date '+%Y-%m-%d %H:%M') hora Colombia"
+          git pull --rebase
+          git push
